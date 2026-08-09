@@ -75,8 +75,6 @@ namespace MortierFu
 
             if (_lobbyService == null)
                 Logs.LogWarning("[GameEndUI] LobbyService introuvable au démarrage.");
-
-            EnsureEventSystemReferences();
         }
 
         private void OnEnable()
@@ -101,7 +99,7 @@ namespace MortierFu
 
         private bool EnsureEventSystemReferences()
         {
-            if (_eventSystem != null && _inputModule != null)
+            if (_eventSystem != null && _inputModule != null && _eventSystem.isActiveAndEnabled)
                 return true;
 
             _eventSystem = EventSystem.current as MultiplayerEventSystem;
