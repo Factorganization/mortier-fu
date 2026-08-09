@@ -38,7 +38,7 @@ MonoBehaviour:
       ModType: 100
   WayFasterParams:
     MoveSpeedMod:
-      Value: 1
+      Value: 1.25
       ModType: 100
   BallistaParams:
     FireRateMod:

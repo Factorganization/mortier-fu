@@ -25,7 +25,7 @@ MonoBehaviour:
     TextSize: 80
     SymbolSize: 0
   - variable: 20
-    value: 3
+    value: 0
     TextSize: 30
     SymbolSize: 30
   - variable: 12
