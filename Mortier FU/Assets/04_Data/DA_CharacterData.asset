@@ -31,7 +31,7 @@ MonoBehaviour:
   <AvatarSize>k__BackingField:
     baseValue: 1
     clamp: 1
-    valueRange: {x: 0.1, y: 10}
+    valueRange: {x: 0.1, y: 6}
   <BombshellDamage>k__BackingField:
     baseValue: 40
     clamp: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
     baseValue: 0.5
     clamp: 0
     valueRange: {x: -3.4028235e+38, y: 3.4028235e+38}
-  <MaxHealthToAvatarSizeFactor>k__BackingField: 0.005
+  <MaxHealthToAvatarSizeFactor>k__BackingField: 0.004
   <StrikePushForceToStrikeRadiusFactor>k__BackingField: 0.1
   <AvatarSizeToStrikeRadiusFactor>k__BackingField: 0.005
   <BombshellImpactRadiusToShotRangeFactor>k__BackingField: 1.2
