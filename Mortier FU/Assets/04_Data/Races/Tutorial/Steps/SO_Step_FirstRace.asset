@@ -25,4 +25,4 @@ MonoBehaviour:
   - Name: RACES TYPE
     DescriptionKey: "There are 3 types of races. \nA summary of the objective is
       always displayed at the top of the screen"
-    MainImage: {fileID: 21300000, guid: 48372ea174ba5f64abbf2a05baa68936, type: 3}
+    MainImage: {fileID: 21300000, guid: 51bff467704638f4a8dece4994930059, type: 3}
