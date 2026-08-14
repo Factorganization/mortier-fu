@@ -19,6 +19,6 @@ MonoBehaviour:
       you become the Bully.
     MainImage: {fileID: 21300000, guid: 367688981c19f374a845e452571ad0b0, type: 3}
   - Name: BULLY'S ROLE
-    DescriptionKey: The Bully's role is to use their dash or shots to stop other
-      players from getting the augment they want!
+    DescriptionKey: The Bully must use their dash as a strike to stop other players
+      from getting the augment they want!
     MainImage: {fileID: 21300000, guid: 0d4b153b8e764e34587442ab4e5610ae, type: 3}

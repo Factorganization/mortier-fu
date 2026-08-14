@@ -15,5 +15,5 @@ MonoBehaviour:
   TutorialType: 2
   Cards:
   - Name: PINATA RACE
-    DescriptionKey: Try pushing the Bully with your dash to make them drop augments!
+    DescriptionKey: Try pushing the Bully with your dash to make him drop augments!
     MainImage: {fileID: 21300000, guid: 8193d94f0674b8843ba5b48685958a3e, type: 3}

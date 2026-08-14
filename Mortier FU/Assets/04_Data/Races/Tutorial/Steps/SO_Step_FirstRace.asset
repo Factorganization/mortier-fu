@@ -16,13 +16,13 @@ MonoBehaviour:
   Cards:
   - Name: RACE PHASE
     DescriptionKey: Before every round, race each other to pick an augment and enhance
-      your build
+      your build.
     MainImage: {fileID: 21300000, guid: a34cc93866e4774499f328171898af10, type: 3}
   - Name: WARNING!
-    DescriptionKey: Once an augment is picked, it's gone! So try be the first one
-      to reach them!
+    DescriptionKey: Once an augment is picked, it's gone! So try to be the first
+      one to reach it!
     MainImage: {fileID: 21300000, guid: 40dabe42fa5f1e64e96101c6664c2d8f, type: 3}
-  - Name: RACES TYPE
+  - Name: RACE TYPE
     DescriptionKey: "There are 3 types of races. \nA summary of the objective is
-      always displayed at the top of the screen"
+      always displayed at the top of the screen."
     MainImage: {fileID: 21300000, guid: 51bff467704638f4a8dece4994930059, type: 3}
