@@ -102,6 +102,27 @@ namespace MortierFu
                 member.SpawnInGame(spawnPoint.position, spawnPoint.rotation);
             }
         }
+        
+        public void SpawnGameWinner(PlayerTeam winnerTeam)
+        {
+            if (winnerTeam == null)
+                return;
+
+            Transform spawnPoint = _levelSystem.GetGameWinnerSpawnPoint();
+
+            foreach (var member in winnerTeam.Members)
+            {
+                member.Character?.Reset();
+                member.SpawnInGame(spawnPoint.position, spawnPoint.rotation);
+
+                var rb = member.Character?.Controller?.rigidbody;
+                if (rb != null)
+                {
+                    rb.useGravity = false;
+                    rb.constraints = RigidbodyConstraints.FreezeAll;
+                }
+            }
+        }
 
         private Transform ResolveSpawnPointFor(PlayerTeam team, PlayerManager player, int racerIndex, Transform fallbackSpawnPoint)
         {

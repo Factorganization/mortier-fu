@@ -14,31 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Mortierfu.Runtime::MortierFu.SO_AugmentDatabase
   RockSolidParams:
     MaxHealthMod:
-      Value: 25
+      Value: 30
       ModType: 100
   ToughnessParams:
     MaxHealthMult:
       Value: 0.2
       ModType: 300
     MaxHealthFlat:
-      Value: 40
+      Value: 50
       ModType: 100
     FireRateMod:
-      Value: -0.15
+      Value: -0.1
       ModType: 200
   VampireParams:
     BombshellDamageMod:
       Value: 0
       ModType: 100
     MaxHealthMod:
-      Value: 20
+      Value: 25
       ModType: 100
     HealMod:
       Value: 30
       ModType: 100
   WayFasterParams:
     MoveSpeedMod:
-      Value: 1
+      Value: 1.25
       ModType: 100
   BallistaParams:
     FireRateMod:
@@ -168,7 +168,7 @@ MonoBehaviour:
       ModType: 100
   TakeTheTempoParams:
     FireRateMod:
-      Value: 0.6
+      Value: 0.8
       ModType: 100
     BombshellSpeedMod:
       Value: 5
@@ -217,7 +217,7 @@ MonoBehaviour:
       ModType: 100
   PerfectPushParams:
     OnStunMaxHealthMod:
-      Value: 20
+      Value: 25
       ModType: 100
     StrikePushForceMod:
       Value: 0.5
@@ -226,7 +226,7 @@ MonoBehaviour:
       Value: 0.5
       ModType: 100
     MaxHealthMod:
-      Value: 20
+      Value: 25
       ModType: 100
   TravelerParams:
     DashForceMod:

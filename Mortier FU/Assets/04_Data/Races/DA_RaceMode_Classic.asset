@@ -18,5 +18,7 @@ MonoBehaviour:
   OverrideRaceDuration: 0
   RaceDuration: 20
   RaceExplanationText: Pick an augment !
+  RaceExplanationTitle: Race
+  RaceExplanationImage: {fileID: 21300000, guid: 03ad863dee20b404e9e75fbb22f9c064, type: 3}
   BullyTargetSize: 2.5
   BullyStatsOverride: {fileID: 11400000, guid: 52f4a770eb52e2a45bc7b626655fa570, type: 2}

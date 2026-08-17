@@ -6,56 +6,54 @@ namespace MortierFu
 {
     public class RacePressureUI : MonoBehaviour
     {
-        [Header("Parameters"), SerializeField] private float _pulseDuration = 0.6f;
+        [Header("Parameters")]
+        [SerializeField] private float _pulseDuration = 0.6f;
+        [SerializeField] private float _delayBetweenPulses = 0.5f; // Temps de pause entre 2 pulses
 
-        [Header("References"), SerializeField] private Image _vignetteImage;
+        [Header("References")]
+        [SerializeField] private Image _vignetteImage;
 
-        private Tween _vignetteTween;
+        [Header("Audio")]
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip _pulseSFX;
+
+        private Sequence _vignetteSequence;
         private Tween _delayTween;
-
         private Color _baseColor;
 
         private void Awake()
         {
-            _baseColor = _vignetteImage.color;
-            _baseColor.a = 1f;
+            if (_vignetteImage != null)
+            {
+                _baseColor = _vignetteImage.color;
+                _baseColor.a = 1f;
+            }
         }
 
         public void StartVignettePressure(float duration)
         {
-            if (_vignetteImage == null)
-                return;
+            if (_vignetteImage == null) return;
 
-            if (_vignetteTween.isAlive)
-                _vignetteTween.Stop();
-
-            if (_delayTween.isAlive)
-                _delayTween.Stop();
+            StopVignettePressure();
 
             _vignetteImage.color = new Color(_baseColor.r, _baseColor.g, _baseColor.b, 0f);
             _vignetteImage.gameObject.SetActive(true);
 
-            _vignetteTween = Tween.Custom(
-                startValue: 0f,
-                endValue: 1f,
-                duration: _pulseDuration,
-                a =>
-                {
-                    var color = _vignetteImage.color;
-                    color.a = a;
-                    _vignetteImage.color = color;
-                },
-                cycles: -1,
-                cycleMode: CycleMode.Yoyo
-            );
+            float halfDuration = _pulseDuration * 0.5f;
+            
+            _vignetteSequence = Sequence.Create(cycles: -1)
+                .ChainCallback(this, target => target.PlayPulseSFX())
+                .Chain(Tween.Alpha(_vignetteImage, endValue: 1f, duration: halfDuration))
+                .Chain(Tween.Alpha(_vignetteImage, endValue: 0f, duration: halfDuration))
+                .ChainDelay(_delayBetweenPulses);
 
             _delayTween = Tween.Delay(duration, StopVignettePressure);
         }
 
         public void StopVignettePressure()
         {
-            if (_vignetteTween.isAlive)
-                _vignetteTween.Stop();
+            if (_vignetteSequence.isAlive)
+                _vignetteSequence.Stop();
 
             if (_delayTween.isAlive)
                 _delayTween.Stop();
@@ -65,6 +63,11 @@ namespace MortierFu
             var color = _vignetteImage.color;
             color.a = 0f;
             _vignetteImage.color = color;
+        }
+
+        private void PlayPulseSFX()
+        {
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_Misc_EndRaceAlert);
         }
     }
 }

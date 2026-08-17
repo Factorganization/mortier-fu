@@ -101,12 +101,16 @@ namespace MortierFu
             player.SetControlContext(PlayerControlContext.LobbyCustomization);
 
             panel.Open(player, OnCustomizationConfirmed);
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_TransitionOut, transform.position);
         }
 
         private void OnCustomizationConfirmed(PlayerManager player)
         {
             if (!player)
                 return;
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_TransitionIn, transform.position);
             
             ForceCloseCustomizationAsync(player, restoreSandboxControl: true, exitState: true, waitForExitAnimation: true).Forget();
         }
@@ -115,6 +119,8 @@ namespace MortierFu
         {
             if (!player)
                 return;
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_TransitionIn, transform.position);
 
             ForceCloseCustomizationAsync(player, restoreSandboxControl: false, exitState: false, waitForExitAnimation: false).Forget();
         }

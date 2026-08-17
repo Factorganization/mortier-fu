@@ -18,6 +18,8 @@ MonoBehaviour:
   OverrideRaceDuration: 0
   RaceDuration: 20
   RaceExplanationText: 
+  RaceExplanationTitle: Bully Race
+  RaceExplanationImage: {fileID: 21300000, guid: 3415042fc8e5f00428be42451afeeb23, type: 3}
   BullyTargetSize: 2.5
   BullyStatsOverride: {fileID: 11400000, guid: 52f4a770eb52e2a45bc7b626655fa570, type: 2}
   OrbitSpeedDegreesPerSecond: 90

@@ -17,4 +17,4 @@ MonoBehaviour:
   - Name: OBSTACLE RACE
     DescriptionKey: Reach the augments at the end of the course while dodging the
       Bully's projectiles!
-    MainImage: {fileID: 21300000, guid: 8cf91b596a791354c97f4335fb8acde7, type: 3}
+    MainImage: {fileID: 21300000, guid: 22770c7bf1e94b445b767daa1a153593, type: 3}

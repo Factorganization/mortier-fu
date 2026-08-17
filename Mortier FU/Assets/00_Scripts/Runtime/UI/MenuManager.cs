@@ -269,13 +269,15 @@ namespace MortierFu
             if (!_uiInputModule)
                 return;
 
-            _cancelAction = _uiInputModule.cancel.action;
+            InputActionReference cancelActionRef = _uiInputModule.cancel;
 
-            if (_cancelAction == null)
+            if (cancelActionRef == null || cancelActionRef.action == null)
             {
-                Logs.LogWarning("[MenuManager] UI cancel action is missing on InputSystemUIInputModule.", this);
+                Logs.LogWarning("[MenuManager] UI cancel action reference is missing on InputSystemUIInputModule.", this);
                 return;
             }
+
+            _cancelAction = cancelActionRef.action;
 
             _cancelAction.performed += HandleGlobalCancelPerformed;
             _cancelAction.Enable();
@@ -317,8 +319,6 @@ namespace MortierFu
             
             _isTransitioning = true;
             _isLoadingLobby = true;
-            
-            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Select);
             
             await UniTask.Delay(TimeSpan.FromSeconds(_buttonAnimationDuration));
             
@@ -363,8 +363,6 @@ namespace MortierFu
                 return;
 
             _isTransitioning = true;
-            
-            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Select);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_buttonAnimationDuration));
             
@@ -401,7 +399,6 @@ namespace MortierFu
 
             _isTransitioning = true;
             
-            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Select);
             
             await UniTask.Delay(TimeSpan.FromSeconds(_buttonAnimationDuration));
             Application.Quit();

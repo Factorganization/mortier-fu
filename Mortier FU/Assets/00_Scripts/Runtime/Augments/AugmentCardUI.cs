@@ -144,7 +144,7 @@ namespace MortierFu
                 E_AugmentValue.PlusOne => " <sprite index=0>",
                 E_AugmentValue.PlusTwo => " <sprite index=0> <sprite index=0>",
                 E_AugmentValue.PlusThree => " <sprite index=0> <sprite index=0> <sprite index=0> ",
-                E_AugmentValue.OneNumber => " <sprite index=0> 1",
+                E_AugmentValue.OneNumber => " <sprite index=0><sprite index=4>",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
             };
             

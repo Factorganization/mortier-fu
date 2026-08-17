@@ -431,9 +431,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mortierfu.Runtime::MortierFu.UISliderSelectionVisual
   _handleImage: {fileID: 785924505591072467}
-  _normalHandleSprite: {fileID: -164781651, guid: 2538e3200120e2948adfad58b3840ff8, type: 3}
-  _selectedHandleSprite: {fileID: -883293215, guid: bb23a12da5c668f49934035b19d8626f, type: 3}
-  _editingHandleSprite: {fileID: -883293215, guid: bb23a12da5c668f49934035b19d8626f, type: 3}
+  _normalHandleSprite: {fileID: -883293215, guid: bb23a12da5c668f49934035b19d8626f, type: 3}
+  _selectedHandleSprite: {fileID: -677237740, guid: bb23a12da5c668f49934035b19d8626f, type: 3}
+  _editingHandleSprite: {fileID: -677237740, guid: bb23a12da5c668f49934035b19d8626f, type: 3}
 --- !u!1 &6970786239507332091
 GameObject:
   m_ObjectHideFlags: 0

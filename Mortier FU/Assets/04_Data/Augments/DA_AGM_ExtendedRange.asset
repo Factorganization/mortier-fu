@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: def9a98b256a48f0836c178de40dc424, type: 3}
-  m_Name: DA_AGM_ExtentedRange
+  m_Name: DA_AGM_ExtendedRange
   m_EditorClassIdentifier: Mortierfu.Runtime::MortierFu.DA_Augment
   ID: 217
   Name: Bowler
@@ -25,7 +25,7 @@ MonoBehaviour:
   CardSprite: {fileID: 21300000, guid: 8f3fbcc1c1d8e104bbb2b082fe164ed5, type: 3}
   SmallSprite: {fileID: 21300000, guid: 547df3b062499d94b920cccf4ec6f919, type: 3}
   AugmentType:
-    assemblyQualifiedName: MortierFu.AGM_ExtentedRange, Mortierfu.Runtime, Version=0.0.0.0,
+    assemblyQualifiedName: MortierFu.AGM_ExtendedRange, Mortierfu.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   AugmentVFX: {fileID: 0}
   ModBundlePath: 

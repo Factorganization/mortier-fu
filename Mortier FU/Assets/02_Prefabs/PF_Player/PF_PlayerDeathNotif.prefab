@@ -144,7 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Mortierfu.Runtime::MortierFu.PlayerDeathNotification
   _killerExclusive:
   - {fileID: 6300884861564561537}
-  - {fileID: 4347667053108922230}
   _killerImg: {fileID: 6823430982475782615}
   _victimImg: {fileID: 5758114437305295814}
   _signImg: {fileID: 4976133911329666459}

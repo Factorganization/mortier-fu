@@ -69,6 +69,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - RaceMaps
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 538e513e2b495e24fa4b95b23195fc39
+    m_Address: WinGameMap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5cf0363ad49b6834888adbbac738dbee
     m_Address: Race_06_Night_Pi
     m_ReadOnly: 0

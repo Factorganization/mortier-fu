@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using System.Threading;
+using UnityEngine.Serialization;
 
 namespace MortierFu
 {
@@ -38,19 +39,20 @@ namespace MortierFu
 
         [Header("Sub Panels")]
         [SerializeField] private GameObject _settingsPanel;
-        [SerializeField] private GameObject _controlsPanel;
 
         [Header("Buttons")]
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _controlsButton;
+        [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _primaryActionButton;
-        [SerializeField] private Button _quitButton;
+        [SerializeField] private Button _mainMenuButton;
 
         [Header("Button Text")]
         [SerializeField] private TMP_Text _settingsButtonText;
         [SerializeField] private TMP_Text _controlsButtonText;
+        [SerializeField] private TMP_Text _resumeButtonText;
         [SerializeField] private TMP_Text _primaryActionButtonText;
-        [SerializeField] private TMP_Text _quitButtonText;
+        [SerializeField] private TMP_Text _mainMenuButtonText;
 
         [Header("Settings UI")]
         [SerializeField] private Toggle _fullscreenToggle;
@@ -58,6 +60,7 @@ namespace MortierFu
         [SerializeField] private Slider _masterVolumeSlider;
         [SerializeField] private Slider _musicVolumeSlider;
         [SerializeField] private Slider _sfxVolumeSlider;
+        [SerializeField] private Slider _ambienceVolumeSlider;
 
         [Header("Unity UI")]
         [SerializeField] private EventSystem _eventSystem;
@@ -74,6 +77,9 @@ namespace MortierFu
         [Header("Switch by Input Element")]
         [SerializeField] private GameObject[] _buttonKeyboard;
         [SerializeField] private GameObject[] _buttonGamepad;
+
+        [Header("Animation")] 
+        [SerializeField, Min(0f)] private float _buttonAnimationDuration = 0.3f;
 
         private readonly List<PlayerPauseSnapshot> _snapshots = new();
 
@@ -199,9 +205,9 @@ namespace MortierFu
 
             _gamePauseSystem.RestoreSettingsFromSave();
 
-            _gamePauseSystem.UpdateUIFromSave(_fullscreenToggle, _vSyncToggle, _masterVolumeSlider, _musicVolumeSlider, _sfxVolumeSlider);
+            _gamePauseSystem.UpdateUIFromSave(_fullscreenToggle, _vSyncToggle, _masterVolumeSlider, _musicVolumeSlider, _sfxVolumeSlider, _ambienceVolumeSlider);
 
-            _gamePauseSystem.BindUIEvents(_fullscreenToggle, _vSyncToggle, _masterVolumeSlider, _musicVolumeSlider, _sfxVolumeSlider);
+            _gamePauseSystem.BindUIEvents(_fullscreenToggle, _vSyncToggle, _masterVolumeSlider, _musicVolumeSlider, _sfxVolumeSlider, _ambienceVolumeSlider);
 
             _settingsInitialized = true;
         }
@@ -214,13 +220,16 @@ namespace MortierFu
             if (_controlsButtonText)
                 _controlsButtonText.text = "Controls";
 
+            if (_resumeButtonText)
+                _resumeButtonText.text = "Resume";
+
             if (_primaryActionButtonText)
                 _primaryActionButtonText.text = _sceneContext == PauseUISceneContext.Lobby
-                    ? "Return to Main menu"
+                    ? "Quit Game"
                     : "End Game";
 
-            if (_quitButtonText)
-                _quitButtonText.text = "Quit Game";
+            if (_mainMenuButtonText)
+                _mainMenuButtonText.text = "Main menu";
         }
 
         private void BindPauseSystemEvents()
@@ -261,23 +270,24 @@ namespace MortierFu
                 _settingsButton.onClick.RemoveListener(OpenSettingsPanel);
                 _settingsButton.onClick.AddListener(OpenSettingsPanel);
             }
-
-            if (_controlsButton)
-            {
-                _controlsButton.onClick.RemoveListener(OpenControlsPanel);
-                _controlsButton.onClick.AddListener(OpenControlsPanel);
-            }
-
-            if (_primaryActionButton)
-            {
-                _primaryActionButton.onClick.RemoveListener(OpenPrimaryConfirmation);
-                _primaryActionButton.onClick.AddListener(OpenPrimaryConfirmation);
-            }
-
-            if (!_quitButton) return;
             
-            _quitButton.onClick.RemoveListener(OpenQuitConfirmation);
-            _quitButton.onClick.AddListener(OpenQuitConfirmation);
+            if (_resumeButton)
+            {
+                _resumeButton.onClick.RemoveListener(ResumeGame);
+                _resumeButton.onClick.AddListener(ResumeGame);
+            }
+
+            if (_primaryActionButton) 
+            {
+                _primaryActionButton.onClick.RemoveListener(OpenPrimaryActionConfirmation);
+                _primaryActionButton.onClick.AddListener(OpenPrimaryActionConfirmation);
+            }
+
+            if (_mainMenuButton)
+            {
+                _mainMenuButton.onClick.RemoveListener(OpenMainMenuConfirmation);
+                _mainMenuButton.onClick.AddListener(OpenMainMenuConfirmation);
+            }
         }
 
         private void UnbindButtonEvents()
@@ -285,14 +295,14 @@ namespace MortierFu
             if (_settingsButton)
                 _settingsButton.onClick.RemoveListener(OpenSettingsPanel);
 
-            if (_controlsButton)
-                _controlsButton.onClick.RemoveListener(OpenControlsPanel);
+            if (_resumeButton)
+                _resumeButton.onClick.RemoveListener(ResumeGame);
 
             if (_primaryActionButton)
-                _primaryActionButton.onClick.RemoveListener(OpenPrimaryConfirmation);
+                _primaryActionButton.onClick.RemoveListener(OpenPrimaryActionConfirmation);
 
-            if (_quitButton)
-                _quitButton.onClick.RemoveListener(OpenQuitConfirmation);
+            if (_mainMenuButton)
+                _mainMenuButton.onClick.RemoveListener(OpenMainMenuConfirmation);
         }
 
         private void BindSettingsFeedbackEvents()
@@ -311,6 +321,9 @@ namespace MortierFu
 
             if (_sfxVolumeSlider)
                 _sfxVolumeSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
+            
+            if (_ambienceVolumeSlider)
+                _ambienceVolumeSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged);
         }
 
         private void UnbindSettingsFeedbackEvents()
@@ -329,6 +342,9 @@ namespace MortierFu
 
             if (_sfxVolumeSlider)
                 _sfxVolumeSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
+            
+            if (_ambienceVolumeSlider)
+                _ambienceVolumeSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged);
         }
 
         private void HandlePaused(PlayerManager player)
@@ -532,9 +548,6 @@ namespace MortierFu
 
             if (_settingsPanel)
                 _settingsPanel.SetActive(false);
-
-            if (_controlsPanel)
-                _controlsPanel.SetActive(false);
         }
 
         private void OpenSettingsPanel()
@@ -544,31 +557,12 @@ namespace MortierFu
             if (_pausePanel)
                 _pausePanel.SetActive(false);
 
-            if (_controlsPanel)
-                _controlsPanel.SetActive(false);
-
             if (_settingsPanel)
                 _settingsPanel.SetActive(true);
 
             Select(_fullscreenToggle);
         }
-
-        private void OpenControlsPanel()
-        {
-            PlayPanelSelectionFeedback();
-
-            if (_pausePanel)
-                _pausePanel.SetActive(false);
-
-            if (_settingsPanel)
-                _settingsPanel.SetActive(false);
-
-            if (_controlsPanel)
-                _controlsPanel.SetActive(true);
-
-            Select(_controlsPanel);
-        }
-
+        
         public void ReturnToMainPanelFromSubPanel(Selectable returnSelection)
         {
             PlayPanelSelectionFeedback();
@@ -581,21 +575,30 @@ namespace MortierFu
                 Select(_settingsButton);
         }
 
-        private void OpenPrimaryConfirmation()
-        {
-            if (_sceneContext == PauseUISceneContext.Lobby)
-                OpenReturnToMainMenuConfirmation();
-            else
-                OpenEndGameConfirmation();
-        }
-        
         public void ReturnToMainPanelFromSubPanel() => ReturnToMainPanelFromSubPanel(_settingsButton);
 
-        private void OpenReturnToMainMenuConfirmation() => OpenPauseConfirmation(_returnToMainMenuDescription, ConfirmReturnToMainMenuAsync, _primaryActionButton);
+        private void ResumeGame() => ResumeGameAsync().Forget();
 
-        private void OpenEndGameConfirmation() => OpenPauseConfirmation(_endGameDescription, ConfirmEndGameAsync, _primaryActionButton);
+        private async UniTask ResumeGameAsync()
+        {
+            PlayPanelSelectionFeedback();
 
-        private void OpenQuitConfirmation() => OpenPauseConfirmation(_quitGameDescription, ConfirmQuitGameAsync, _quitButton);
+            await UniTask.Delay(TimeSpan.FromSeconds(_buttonAnimationDuration), ignoreTimeScale: true);
+                
+            _gamePauseSystem?.Resume();
+        }
+
+        private void OpenMainMenuConfirmation() =>
+            OpenPauseConfirmation(_returnToMainMenuDescription, ConfirmReturnToMainMenuAsync, _mainMenuButton);
+        
+        private void OpenPrimaryActionConfirmation()
+        {
+            if (_sceneContext == PauseUISceneContext.Lobby)
+                OpenPauseConfirmation(_quitGameDescription, ConfirmQuitGameAsync, _primaryActionButton);
+            else
+                OpenPauseConfirmation(_endGameDescription, ConfirmEndGameAsync, _primaryActionButton);
+        }
+            
 
         private void OpenPauseConfirmation(string description, Func<UniTask> onConfirmAsync, Selectable returnSelection)
         {
@@ -677,7 +680,7 @@ namespace MortierFu
             if (_gamePauseSystem is not null && _gamePauseSystem.IsPaused)
                 _gamePauseSystem.Resume();
 
-            await UniTask.Yield();
+            await UniTask.Delay(TimeSpan.FromSeconds(_buttonAnimationDuration));
         }
 
         private void ClosePauseUI(bool restorePlayers)
@@ -710,9 +713,6 @@ namespace MortierFu
 
             if (_settingsPanel)
                 _settingsPanel.SetActive(false);
-
-            if (_controlsPanel)
-                _controlsPanel.SetActive(false);
 
             if (_root)
                 _root.SetActive(false);
@@ -765,6 +765,12 @@ namespace MortierFu
             AudioService.SetVolume(AudioService.BusEnum.SFX, value);
             PlayMinorUIFeedback();
         }
+        
+        private void OnAmbienceVolumeChanged(float value)
+        {
+            AudioService.SetVolume(AudioService.BusEnum.AMBIENCE, value);
+            PlayMinorUIFeedback();
+        }
 
         private void PlayMinorUIFeedback()
         {
@@ -798,8 +804,8 @@ namespace MortierFu
 
             if (_settingsPanel && _settingsPanel.activeInHierarchy)
                 return false;
-
-            return !_controlsPanel || !_controlsPanel.activeInHierarchy;
+            
+            return  true;
         }
     }
 }

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{37aae94f-d5dd-4a14-b6d4-afefac4a908c}">
 		<property name="color">
-			<value>Purple Light 2</value>
+			<value>Purple</value>
 		</property>
 		<property name="name">
 			<value>SFX_Misc_ThunderStrike</value>
@@ -95,6 +95,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{6f2f9c69-2140-43f4-8dd7-515da7168fef}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{dbc9e642-472e-4742-bd9b-f7805ec2396b}</destination>
 		</relationship>
@@ -208,6 +211,7 @@
 		<relationship name="effects">
 			<destination>{eb2494eb-a7b9-4dee-bea2-0d207ea954ae}</destination>
 			<destination>{02f6769d-7d1f-4d07-938b-c7a6f10c5ae7}</destination>
+			<destination>{75a2d8be-919b-471a-9cfa-8640f7c99b87}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{4b7c5c5e-8979-457e-a3ff-f24068b0d38d}" />
@@ -293,6 +297,17 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{02f6769d-7d1f-4d07-938b-c7a6f10c5ae7}" />
+	<object class="SFXReverbEffect" id="{75a2d8be-919b-471a-9cfa-8640f7c99b87}">
+		<property name="decayTime">
+			<value>750</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>100</value>
+		</property>
+		<property name="wetLevel">
+			<value>-7.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{e5132eab-fae3-4cdc-a1f9-9a94df9d15a9}" />
 	<object class="MixerBusFader" id="{5e7b5b5b-b389-4693-b5b8-d8e2572fbb39}" />
 	<object class="MixerBusFader" id="{1b11fcf2-2e01-4b00-a9a9-d5fd30367b78}" />

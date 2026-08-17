@@ -78,6 +78,8 @@ namespace MortierFu
             SO_MatchRuleset ruleset = _rulesetLibrary.Get(nextIndex);
 
             SetRuleset(ruleset, playerCount, preserveCurrentCustomConfig: true);
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Navigate, transform.position);
         }
 
         public void SetRuleset(SO_MatchRuleset ruleset, int playerCount, bool preserveCurrentCustomConfig)
@@ -162,6 +164,7 @@ namespace MortierFu
             }
 
             MarkCustomAndNotify();
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Slider, transform.position);
         }
 
         public void SetFloat(MatchSettingId settingId, float value)
@@ -188,6 +191,7 @@ namespace MortierFu
             }
 
             MarkCustomAndNotify();
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Slider, transform.position);
         }
 
         public void SetBool(MatchSettingId settingId, bool value)
@@ -217,6 +221,7 @@ namespace MortierFu
             }
 
             MarkCustomAndNotify();
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Tick, transform.position);
         }
 
         public MatchConfig ToMatchConfig()

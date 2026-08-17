@@ -20,6 +20,7 @@ namespace MortierFu
         private Material _customMaterialInstance;
 
         public  Material CustomsMaterial => _customizationMaterial;
+        public Transform HeadAnchor => _crownInstance != null ? _crownInstance.transform : null;
 
         private GameModeBase _gameModeBase;
         

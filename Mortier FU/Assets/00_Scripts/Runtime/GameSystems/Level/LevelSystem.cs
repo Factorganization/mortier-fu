@@ -23,6 +23,8 @@ namespace MortierFu
 
         private const string k_editorOverrideArenaMapAddress = "OverrideArenaMapAddress";
         private const string k_editorOverrideRaceMapAddress = "OverrideRaceMapAddress";
+        
+        private const string k_winGameMapAddress = "WinGameMap";
 
         private const int k_maxRaceModeSelectionAttempts = 8;
 
@@ -65,6 +67,25 @@ namespace MortierFu
         public async UniTask LoadArenaMap()
         {
             await LoadMapAsync(_arenaMapLocations, _arenaMapCooldowns, arenaMode: true, editorOverrideKey: k_editorOverrideArenaMapAddress, debugMapTypeName: "arena");
+        }
+        
+        public async UniTask LoadWinGameMap()
+        {
+            await FinishUnfinishedBusiness();
+            await UnloadCurrentMap();
+
+            SetCameraArenaMode(false);
+
+            bool loaded = await LoadSpecificMapAsync(k_winGameMapAddress, "WinGame");
+
+            if (!loaded)
+            {
+                Logs.LogError("[LevelSystem] Failed to load WinGame map.");
+                return;
+            }
+            
+            if (_cameraSystem != null && _cameraSystem.Controller != null)
+                _cameraSystem.Controller.gameObject.SetActive(false);
         }
 
         private async UniTask LoadRaceMapAvoidingPreviousModeAsync()
@@ -342,6 +363,60 @@ namespace MortierFu
 
             return _gameModeBase.Data.SecondArenaRaceOverride.Address;
         }
+        
+        private async UniTask<bool> LoadSpecificMapAsync(string address, string debugMapTypeName)
+        {
+            if (string.IsNullOrEmpty(address))
+            {
+                Logs.LogError($"[LevelSystem] Cannot load {debugMapTypeName} map: address is empty.");
+                return false;
+            }
+
+            IResourceLocation mapLocation = null;
+            var handle = Addressables.LoadResourceLocationsAsync(address);
+
+            try
+            {
+                await handle;
+
+                if (handle.Status != AsyncOperationStatus.Succeeded || handle.Result == null || handle.Result.Count == 0)
+                {
+                    Logs.LogWarning($"[LevelSystem] {debugMapTypeName} scene key not found in Addressables: {address}");
+                    return false;
+                }
+
+                for (int i = 0; i < handle.Result.Count; i++)
+                {
+                    if (!IsSceneLocation(handle.Result[i]))
+                        continue;
+
+                    mapLocation = handle.Result[i];
+                    break;
+                }
+
+                if (mapLocation is null)
+                {
+                    Logs.LogError($"[LevelSystem] {debugMapTypeName} key found, but no valid scene location was found for: {address}");
+                    return false;
+                }
+
+                bool loaded = await LoadAddressableMapAsync(mapLocation, debugMapTypeName);
+
+                if (!loaded)
+                    return false;
+
+                ApplyLoadedMapData();
+
+                Logs.Log($"[LevelSystem] Loaded {debugMapTypeName} scene: {DescribeSceneKey(mapLocation)}");
+
+                return true;
+            }
+            finally
+            {
+                if (handle.IsValid())
+                    Addressables.Release(handle);
+            }
+        }
 
         private async UniTask<bool> TryLoadEditorOverrideMapAsync(string editorOverrideKey, string debugMapTypeName)
         {
@@ -562,6 +637,14 @@ namespace MortierFu
                 return FallbackTransform;
 
             return BoundReporter.RoundWinnerSpawnPoint ?? FallbackTransform;
+        }
+        
+        public Transform GetGameWinnerSpawnPoint()
+        {
+            if (BoundReporter == null)
+                return FallbackTransform;
+
+            return BoundReporter.GameWinnerSpawnPoint ?? FallbackTransform;
         }
 
         public Transform GetSpawnPoint(int index)

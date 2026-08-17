@@ -15,6 +15,7 @@ namespace MortierFu
         [SerializeField] private Slider _masterVolumeSlider;
         [SerializeField] private Slider _musicVolumeSlider;
         [SerializeField] private Slider _sfxVolumeSlider;
+        [SerializeField] private Slider _ambienceVolumeSlider;
 
         private SaveService _saveService;
         private bool _eventsBound;
@@ -86,6 +87,9 @@ namespace MortierFu
 
             if (_sfxVolumeSlider)
                 _sfxVolumeSlider.SetValueWithoutNotify(settings.SfxVolume);
+            
+            if (_ambienceVolumeSlider)
+                _ambienceVolumeSlider.SetValueWithoutNotify(settings.AmbienceVolume);
         }
 
         private void BindUIEvents()
@@ -107,6 +111,9 @@ namespace MortierFu
 
             if (_sfxVolumeSlider)
                 _sfxVolumeSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
+            
+            if (_ambienceVolumeSlider)
+                _ambienceVolumeSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged);
 
             _eventsBound = true;
         }
@@ -130,6 +137,9 @@ namespace MortierFu
 
             if (_sfxVolumeSlider)
                 _sfxVolumeSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
+            
+            if (_ambienceVolumeSlider)
+                _ambienceVolumeSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged);
 
             _eventsBound = false;
         }
@@ -182,6 +192,16 @@ namespace MortierFu
                 return;
 
             _saveService.Settings.SfxVolume = value;
+            AudioService.SetVolume(AudioService.BusEnum.SFX, value);
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Slider);
+        }
+        
+        private void OnAmbienceVolumeChanged(float value)
+        {
+            if (_saveService == null)
+                return;
+
+            _saveService.Settings.AmbienceVolume = value;
             AudioService.SetVolume(AudioService.BusEnum.SFX, value);
             AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Slider);
         }

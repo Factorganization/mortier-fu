@@ -19,11 +19,11 @@ MonoBehaviour:
   - variable: 5
     value: 6
     TextSize: 0
-    SymbolSize: 110
+    SymbolSize: 100
   - variable: 4
     value: 6
     TextSize: 0
-    SymbolSize: 110
+    SymbolSize: 100
   - variable: 20
     value: 0
     TextSize: 30
@@ -31,12 +31,12 @@ MonoBehaviour:
   - variable: 3
     value: 1
     TextSize: 0
-    SymbolSize: 110
+    SymbolSize: 100
   - variable: 6
     value: 2
     TextSize: 0
-    SymbolSize: 110
-  DescFontSize: 110
+    SymbolSize: 100
+  DescFontSize: 100
   Rarity: 4
   CardSprite: {fileID: 21300000, guid: 290549f1b97dec24a92077494efb90fc, type: 3}
   SmallSprite: {fileID: 21300000, guid: 60ffdcbc6903a2e4b8bd99841a998e6e, type: 3}

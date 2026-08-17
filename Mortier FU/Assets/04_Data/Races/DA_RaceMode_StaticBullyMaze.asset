@@ -18,5 +18,7 @@ MonoBehaviour:
   OverrideRaceDuration: 1
   RaceDuration: 25
   RaceExplanationText: Pick an augment while dodging the Bully!
+  RaceExplanationTitle: Obstacle Race
+  RaceExplanationImage: {fileID: 21300000, guid: 11179b909d7c19143a80f6708e3e20c6, type: 3}
   BullyTargetSize: 2.5
   BullyStatsOverride: {fileID: 11400000, guid: 456ca0d51f3b2f146b0c37c03344f79c, type: 2}

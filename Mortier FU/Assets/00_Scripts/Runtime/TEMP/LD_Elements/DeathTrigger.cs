@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using MortierFu;
 
@@ -23,5 +24,10 @@ public class DeathTrigger : MonoBehaviour
 
         if (rb != null && rb.TryGetComponent(out PlayerCharacter character))
             character.Health.TakeLethalDamage(this);
+
+        if (rb != null && rb.TryGetComponent(out SandboxProps props))
+        {
+            props.Respawn().Forget();
+        }
     }
 }

@@ -371,7 +371,7 @@ namespace MortierFu
                 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                EndGame();
+                await EndGame();
             }
             catch (OperationCanceledException)
             {
@@ -543,6 +543,31 @@ namespace MortierFu
             return null;
         }
         
+        private Vector2 GetWinnerScreenPosition()
+        {
+            PlayerManager winner = GetWinnerPlayer();
+
+            if (winner == null || winner.Character == null)
+            {
+                Logs.LogWarning("[GameModeBase] Cannot compute winner screen position: no winner character found. Using screen center.");
+                return new Vector2(0.5f, 0.5f);
+            }
+
+            Camera cam = cameraSystem?.Controller != null ? cameraSystem.Controller.GetComponentInChildren<Camera>() : Camera.main;
+
+            if (cam == null)
+            {
+                Logs.LogWarning("[GameModeBase] Cannot compute winner screen position: no camera found. Using screen center.");
+                return new Vector2(0.5f, 0.5f);
+            }
+
+            Transform headAnchor = winner.Character.CustomizationVisual != null ? winner.Character.CustomizationVisual.HeadAnchor : null;
+            Vector3 headWorldPos = headAnchor != null ? headAnchor.position : winner.Character.transform.position + Vector3.up * 1.6f;
+
+            Vector3 viewportPos = cam.WorldToViewportPoint(headWorldPos);
+
+            return new Vector2(viewportPos.x, viewportPos.y);
+        }
         private PlayerManager GetTeamPrimaryPlayer(PlayerTeam team)
         {
             if (team?.Members == null || team.Members.Count == 0)
@@ -560,15 +585,23 @@ namespace MortierFu
             return player ? player.PlayerIndex : -1;
         }
 
-        private void EndGame()
+        private async UniTask EndGame()
         {
-            audioService.StartMusic(AudioService.FMODEvents.MUS_Victory).Forget();
+            Vector2 winnerScreenPos = GetWinnerScreenPosition();
 
+            await CircleTransition.Instance.CloseAsync(FlowSettings.RoundTransitionDuration, winnerScreenPos);
+
+            await levelSystem.LoadWinGameMap();
+
+            _playerSpawnController?.SpawnGameWinner(gameVictor);
+
+            audioService.StartMusic(AudioService.FMODEvents.MUS_Victory).Forget();
             SetPlayersControlContext(PlayerControlContext.EndGame);
             OnGameEnded?.Invoke(GetWinnerPlayerIndex());
             Logs.Log("Game has ended.");
-        }
 
+            await CircleTransition.Instance.OpenAsync(FlowSettings.RoundTransitionDuration, winnerScreenPos);
+        }
         private async UniTask RunAugmentRaceStartPresentationAsync(CancellationToken cancellationToken)
         {
             if (OnAugmentRaceStartPresentationAsync == null)

@@ -91,9 +91,10 @@ namespace MortierFu
             AudioService.SetVolume(AudioService.BusEnum.MASTER, settings.MasterVolume);
             AudioService.SetVolume(AudioService.BusEnum.MUSIC, settings.MusicVolume);
             AudioService.SetVolume(AudioService.BusEnum.SFX, settings.SfxVolume);
+            AudioService.SetVolume(AudioService.BusEnum.AMBIENCE, settings.AmbienceVolume);
         }
 
-        public void UpdateUIFromSave(Toggle fullscreenToggle, Toggle vsyncToggle, Slider masterVolumeSlider, Slider musicVolumeSlider, Slider sfxVolumeSlider)
+        public void UpdateUIFromSave(Toggle fullscreenToggle, Toggle vsyncToggle, Slider masterVolumeSlider, Slider musicVolumeSlider, Slider sfxVolumeSlider, Slider ambienceSlider)
         {
             if (!TryGetSettings(out SettingsData settings))
             {
@@ -115,9 +116,12 @@ namespace MortierFu
 
             if (sfxVolumeSlider)
                 sfxVolumeSlider.SetValueWithoutNotify(settings.SfxVolume);
+            
+            if (ambienceSlider)
+                ambienceSlider.SetValueWithoutNotify(settings.AmbienceVolume);
         }
 
-        public void BindUIEvents(Toggle fullscreenToggle, Toggle vsyncToggle, Slider masterVolumeSlider, Slider musicVolumeSlider, Slider sfxVolumeSlider)
+        public void BindUIEvents(Toggle fullscreenToggle, Toggle vsyncToggle, Slider masterVolumeSlider, Slider musicVolumeSlider, Slider sfxVolumeSlider, Slider ambienceSlider)
         {
             if (fullscreenToggle)
             {
@@ -147,6 +151,12 @@ namespace MortierFu
             {
                 sfxVolumeSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
                 sfxVolumeSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
+            }
+            
+            if (ambienceSlider)
+            {
+                ambienceSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged);
+                ambienceSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged);
             }
         }
 
@@ -213,6 +223,14 @@ namespace MortierFu
                 return;
 
             settings.SfxVolume = value;
+        }
+        
+        private void OnAmbienceVolumeChanged(float value)
+        {
+            if (!TryGetSettings(out SettingsData settings))
+                return;
+
+            settings.AmbienceVolume = value;
         }
 
         private bool TryGetSettings(out SettingsData settings)

@@ -10,6 +10,7 @@ namespace MortierFu
     {
         [Header("Level Design")] public Transform[] SpawnPoints;
         public Transform RoundWinnerSpawnPoint;
+        public Transform GameWinnerSpawnPoint;
 
         [SerializeField] private CameraMapConfig _cameraMapConfig;
 
@@ -76,6 +77,7 @@ namespace MortierFu
 
         [SerializeField] private Color _winnerSpawnColor = Color.yellow;
         [SerializeField] private Color _raceWinnerSpawnColor = Color.mediumPurple;
+        [SerializeField] private Color _gameWinnerSpawnColor = Color.cyan;
         [SerializeField] private Color _spawnPointColor = Color.dodgerBlue;
         [SerializeField] private Color _augmentPointColor = Color.softRed;
         [SerializeField] private float _widgetSize = 0.1f;
@@ -105,6 +107,12 @@ namespace MortierFu
             {
                 Gizmos.color = _raceWinnerSpawnColor;
                 Gizmos.DrawSphere(RoundWinnerSpawnPoint.position, _widgetSize);
+            }
+            
+            if (GameWinnerSpawnPoint) 
+            {
+                Gizmos.color = _gameWinnerSpawnColor;
+                Gizmos.DrawSphere(GameWinnerSpawnPoint.position, _widgetSize);
             }
 
             if (IsRaceMap)

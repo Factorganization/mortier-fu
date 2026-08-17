@@ -105,6 +105,8 @@ public class AugmentRaceTutorialControllerUI : MonoBehaviour
         _cts = new CancellationTokenSource();
         
         Tween lastDisappearTween = default;
+        
+        AudioService.PlayOneShot(AudioService.FMODEvents.SFX_Augment_Showcase);
 
         foreach (CardTuto card in _activeCards)
         {

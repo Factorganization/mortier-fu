@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MortierFu;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
@@ -39,6 +40,8 @@ public class CardTuto : MonoBehaviour
     {
         canvasGroup.alpha = 0f;
         transform.localScale = appearScaleFrom;
+
+        AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Navigate, transform.position);
 
         Tween.Alpha(canvasGroup, 1f, appearDuration).ToUniTask(cancellationToken:cts.Token).Forget();
         return Tween.Scale(transform,originScale, appearDuration, Ease.OutBack).ToUniTask(cancellationToken: cts.Token);

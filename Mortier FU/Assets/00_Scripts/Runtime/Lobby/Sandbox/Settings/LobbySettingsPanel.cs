@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace MortierFu
@@ -28,6 +30,12 @@ namespace MortierFu
         [Header("Settings Items")]
         [SerializeField] private UIMatchSelectableItemBase[] _settingsItems;
 
+        [Header("Settings GameMode Custom Pannel")]
+        [SerializeField] private float panelGameModeOpenXPos;
+        [SerializeField] private float panelGameModeCloseXPos;
+        [SerializeField] private float panelGameModeDurationTween = 0.2f;
+        [SerializeField] private Ease panelGameModeEaseTween = Ease.InBounce;
+        
         [Header("Optional")]
         [SerializeField] private TEMP_LobbyRecommendedScoreDisplay _recommendedScoreDisplay;
 
@@ -44,6 +52,8 @@ namespace MortierFu
         
         private MultiplayerEventSystem _globalEventSystem; 
         private InputSystemUIInputModule _globalInputModule;
+        
+        private Tween _panelGameModeTween;
         
         private void Awake()
         {
@@ -112,11 +122,16 @@ namespace MortierFu
             SetSettingsEventSystemActive(true);
 
             BindItems();
+
+            _scrollFollower.gameObject.SetActive(_matchSettingsData.SelectedRuleset.AllowEditing);
+            
             Refresh();
             
             _uiSession.Begin(player, _settingsEventSystem, _settingsInputModule, _firstSelected, PlayerControlContext.LobbySettingsOwner);
 
             _selectionRoutine = StartCoroutine(SelectFirstWhenReady());
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_Augment_Showcase, transform.position);
         }
 
         public void Close() => CloseInternal(notifyClosed: false);
@@ -255,6 +270,8 @@ namespace MortierFu
 
             if (notifyClosed && activePlayer)
                 onClosed?.Invoke(activePlayer);
+            
+            AudioService.PlayOneShot(AudioService.FMODEvents.SFX_UI_Return, transform.position);
         }
 
         private void BindItems()
@@ -268,7 +285,8 @@ namespace MortierFu
                     _settingsItems[i].Bind(this, _matchSettingsData, _currentPlayerCount);
             }
         }
-
+        
+        
         private void Refresh()
         {
             if (_settingsItems != null)
@@ -282,7 +300,34 @@ namespace MortierFu
 
             _recommendedScoreDisplay?.Refresh(_matchSettingsData ? _matchSettingsData.ScoreToWin : 0);
             _gameModeText.text = _matchSettingsData.SelectedRuleset.DisplayName;
+            
+            HandleAnimationForCustom(isCustom: _matchSettingsData.SelectedRuleset.AllowEditing);
+            
             ValidateCurrentSelection();
+        }
+
+        private void HandleAnimationForCustom(bool isCustom)
+        {
+            if (!_scrollFollower.gameObject.activeInHierarchy)
+                _scrollFollower.gameObject.SetActive(true);
+            
+            if (_isOpening && isCustom)
+                _scrollFollower.gameObject.SetActive(true);
+            
+            if (_isOpening && !isCustom)
+                _scrollFollower.gameObject.SetActive(false);
+            
+            _panelGameModeTween.Stop();
+            
+            RectTransform target = _scrollFollower.transform as RectTransform;
+                
+            float endValueYPos = isCustom ? panelGameModeOpenXPos : panelGameModeCloseXPos;
+                
+            if (target != null) _panelGameModeTween = Tween.LocalPositionX(
+                target,
+                endValueYPos,
+                panelGameModeDurationTween,
+                panelGameModeEaseTween);
         }
 
         private void SetSettingsEventSystemActive(bool active)

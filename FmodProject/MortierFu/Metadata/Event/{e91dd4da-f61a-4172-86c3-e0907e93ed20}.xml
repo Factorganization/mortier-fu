@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{e91dd4da-f61a-4172-86c3-e0907e93ed20}">
 		<property name="color">
-			<value>Purple Light 2</value>
+			<value>Purple</value>
 		</property>
 		<property name="name">
 			<value>SFX_Misc_EndRaceAlert</value>
@@ -100,6 +100,7 @@
 		<relationship name="effects">
 			<destination>{bc341c35-d21e-4343-98f4-ff16e129c5cd}</destination>
 			<destination>{91ad3de5-014f-4e22-8c95-562aea49818d}</destination>
+			<destination>{119417e1-5960-4125-8fb2-4750ece7136f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9843b47c-0e0c-4c94-bd0d-22e73821f9e3}" />
@@ -132,6 +133,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{91ad3de5-014f-4e22-8c95-562aea49818d}" />
+	<object class="MultibandEqEffect" id="{119417e1-5960-4125-8fb2-4750ece7136f}" />
 	<object class="Automator" id="{ae237676-6397-41dc-a47e-3d22caeaaf37}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>surroundPanDirection</value>
