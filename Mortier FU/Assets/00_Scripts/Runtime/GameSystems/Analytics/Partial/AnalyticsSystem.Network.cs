@@ -10,7 +10,8 @@ namespace MortierFu.Analytics
     public partial class AnalyticsSystem
     {
         private const string GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbweVP5xpPXn1yIb4mxnllOAtJM8LTol0cVZU5_Unl4Q--GwPC3WhOXVvPjAMfwlgJSF/exec";
-
+        
+        
         private async UniTask SendGameOverviewToGoogleSheets()  
         {
             if (ShouldSkipAnalyticsInEditor())
@@ -53,8 +54,8 @@ namespace MortierFu.Analytics
                         form.AddField($"{prefix}StunsUnderwented", stats.stunsUnderwented.ToString());
                         form.AddField($"{prefix}ShotsFired", stats.shotsFired.ToString());
                         form.AddField($"{prefix}ShotsHit", stats.shotsHit.ToString());
-                        form.AddField($"{prefix}DamageDealt", stats.damageDealt.ToString("F2"));
-                        form.AddField($"{prefix}DamageTaken", stats.damageTaken.ToString("F2"));
+                        form.AddField($"{prefix}DamageDealt", stats.damageDealt.ToInvariantString());
+                        form.AddField($"{prefix}DamageTaken", stats.damageTaken.ToInvariantString());
                     }
                     else
                     {
@@ -215,8 +216,8 @@ namespace MortierFu.Analytics
                             form.AddField($"{prefix}Stunned", player.stunsUnderwented.ToString());
                             form.AddField($"{prefix}ShotFired", player.shotsFired.ToString());
                             form.AddField($"{prefix}ShotHit", player.shotsHit.ToString());
-                            form.AddField($"{prefix}DamageDealt", player.damageDealt.ToString());
-                            form.AddField($"{prefix}Taken", player.damageTaken.ToString());
+                            form.AddField($"{prefix}DamageDealt", player.damageDealt.ToInvariantString());
+                            form.AddField($"{prefix}Taken", player.damageTaken.ToInvariantString());
                             form.AddField($"{prefix}DeathCause", player.deathCauseName);
                         }
                         else
@@ -274,18 +275,18 @@ namespace MortierFu.Analytics
                         _gameData.finalPlayerStats[i].playerStats != null)
                     {
                         var player = _gameData.finalPlayerStats[i].playerStats;
-                        form.AddField($"{prefix}MaxHealth", player.maxHealth.ToString());
-                        form.AddField($"{prefix}MoveSpeed", player.moveSpeed.ToString());
-                        form.AddField($"{prefix}BombshellDamage", player.bombshellDamage.ToString());
-                        form.AddField($"{prefix}ImpactRadius", player.bombshellImpactRadius.ToString());
-                        form.AddField($"{prefix}BulletSpeed", player.bombshellSpeed.ToString());
-                        form.AddField($"{prefix}FireRate", player.fireRate.ToString());
-                        form.AddField($"{prefix}ShotRange", player.shotRange.ToString());
-                        form.AddField($"{prefix}DashCharges", player.dashCharges.ToString());
-                        form.AddField($"{prefix}DashCooldown", player.dashCooldown.ToString());
-                        form.AddField($"{prefix}DashDistance", player.dashDistance.ToString());
-                        form.AddField($"{prefix}StrikePushForce", player.strikePushForce.ToString());
-                        form.AddField($"{prefix}StunDuration", player.strikeStunDuration.ToString());
+                        form.AddField($"{prefix}MaxHealth", player.maxHealth.ToInvariantString());
+                        form.AddField($"{prefix}MoveSpeed", player.moveSpeed.ToInvariantString());
+                        form.AddField($"{prefix}BombshellDamage", player.bombshellDamage.ToInvariantString());
+                        form.AddField($"{prefix}ImpactRadius", player.bombshellImpactRadius.ToInvariantString());
+                        form.AddField($"{prefix}BulletSpeed", player.bombshellSpeed.ToInvariantString());
+                        form.AddField($"{prefix}FireRate", player.fireRate.ToInvariantString());
+                        form.AddField($"{prefix}ShotRange", player.shotRange.ToInvariantString());
+                        form.AddField($"{prefix}DashCharges", player.dashCharges.ToInvariantString());
+                        form.AddField($"{prefix}DashCooldown", player.dashCooldown.ToInvariantString());
+                        form.AddField($"{prefix}DashDistance", player.dashDistance.ToInvariantString());
+                        form.AddField($"{prefix}StrikePushForce", player.strikePushForce.ToInvariantString());
+                        form.AddField($"{prefix}StunDuration", player.strikeStunDuration.ToInvariantString());
                     }
                     else
                     {
@@ -309,6 +310,14 @@ namespace MortierFu.Analytics
             {
                 Logs.LogError($"Exception while sending player stats ; {ex.Message}");
             }
+        }
+    }
+    
+    public static class FloatExtensions
+    {
+        public static string ToInvariantString(this float value, string format = "F2")
+        {
+            return value.ToString(format, System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }
